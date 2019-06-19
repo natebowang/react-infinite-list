@@ -1,14 +1,30 @@
 import 'normalize.css';
-import React from 'react';
+import React, {useContext} from 'react';
 import ReactDOM from 'react-dom';
+import Store, {Ctx} from './store/Store';
+import rootReducer from './reducer/rootReducer';
+import NextPage from "./view/NextPage";
+import MockList from './view/MockList';
 // 2st option for service worker
 // import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
-const Main = () => (
-    <div>Hello React!</div>
-);
+// Main component also integrated connect function.
+// I have to transfer context to props to use React.memo.
+const Main = () => {
+    const {store: {items}, dispatch}
+        = useContext(Ctx);
+    return (
+        <NextPage dispatch={dispatch}>
+            <MockList items={items}/>
+        </NextPage>
+    );
+};
 
-ReactDOM.render(<Main/>, document.getElementById('root'));
+ReactDOM.render((
+    <Store reducer={rootReducer}>
+        <Main/>
+    </Store>
+), document.getElementById('root'));
 
 // 1st option for service worker
 if ('serviceWorker' in navigator) {
