@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {ifReachBottomMiddleware} from "../reducer/ifReachBottomReducer";
 
-const WindowScrollHandler = ({children, dispatch}) => {
+const WindowScrollHandler = ({children, dispatch, nextPageNo}) => {
     const windowScrollHandler = (event) => {
         event.preventDefault();
         switch (event.type) {
             case 'scroll':
-                ifReachBottomMiddleware(dispatch);
+                ifReachBottomMiddleware(dispatch, nextPageNo);
                 break;
             default:
                 throw(new Error('No such handler ' + event.type));
@@ -14,11 +14,10 @@ const WindowScrollHandler = ({children, dispatch}) => {
     };
 
     useEffect(() => {
-        ifReachBottomMiddleware(dispatch);
         ['scroll'].forEach(event => window.addEventListener(event, windowScrollHandler));
         return () => {
             ['scroll'].forEach(event => window.removeEventListener(event, windowScrollHandler));
-            dispatch({type: 'abortFetchItems',});
+            dispatch({type: 'abortFetchItems'});
         };
     }, []);
 

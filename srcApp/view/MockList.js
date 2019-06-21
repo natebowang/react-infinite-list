@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {ifReachBottomMiddleware} from "../reducer/ifReachBottomReducer";
 
 const style = {
     margin: '0.4rem',
@@ -7,10 +8,13 @@ const style = {
     width: '35rem',
 };
 
-const MockList = ({items}) => {
+const MockList = ({items, dispatch, nextPageNo}) => {
+    useEffect(() => {
+        ifReachBottomMiddleware(dispatch, nextPageNo);
+    });
     return (
         <>
-            {items.map((item, key)=>{
+            {items.map((item, key) => {
                 return <div key={key} style={style}>{item.id} {item.title}</div>
             })}
         </>

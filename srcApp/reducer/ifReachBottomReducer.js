@@ -3,6 +3,7 @@ import apiRespToItems from '../itemApiAdaptor/apiRespToItems';
 import getJsonObject from "../utility/getJsonObject";
 
 export const controller = new AbortController();
+const signal = controller.signal;
 // Since this is a async reducer, this status flag must be checked when dispatch.
 // if (downloading = false) {
 //     downloading = true;
@@ -11,8 +12,8 @@ export const controller = new AbortController();
 // }
 let downloading = false;
 const apiUrl = 'https://www.zouren.ml/mockapi/posts';
-export const ifReachBottomMiddleware = (dispatch) => {
-    if (downloading = false) {
+export const ifReachBottomMiddleware = (dispatch, nextPageNo) => {
+    if (!downloading) {
         downloading = true;
         // console.debug('check if reach bottom '
         //     + (window.innerHeight + window.scrollY + BOTTOM_DISTANCE)
@@ -25,19 +26,26 @@ export const ifReachBottomMiddleware = (dispatch) => {
         if (isReachBottom) {
             getJsonObject(apiUrl)({
                 signal: signal,
-                page: 0, //todo
+                nextPageNo: nextPageNo,
                 size: PAGE_SIZE,
             })
                 .then(apiRespToItems)
                 .then(newItems => {
                     dispatch({type: 'ifReachBottom', newItems: newItems,});
+                })
+                .catch(error => {
                     downloading = false;
+                    throw error;
                 });
+        } else {
+            downloading = false;
         }
     }
 };
 
 export default (prev, action) => {
+    downloading = false;
+    // console.debug('check if reach bottom '
     return {
         ...prev,
         items: prev.items.concat(action.newItems),
