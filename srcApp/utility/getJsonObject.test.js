@@ -22,7 +22,7 @@ describe('get json object', () => {
             statusText: 'ok',
             json: () => mockJsonObject
         })));
-        return (getJsonObject(apiUrl)().then(obj => expect(obj).toEqual(
+        return (getJsonObject(apiUrl)({}).then(obj => expect(obj).toEqual(
             mockJsonObject
         )));
     });
@@ -33,7 +33,7 @@ describe('get json object', () => {
             statusText: 'some reason',
             json: () => mockJsonObject
         })));
-        return (getJsonObject(apiUrl)().catch(e => expect(e).toEqual(
+        return (getJsonObject(apiUrl)({}).catch(e => expect(e).toEqual(
             new Error('404 some reason')
         )));
     });

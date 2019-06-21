@@ -3,7 +3,7 @@ import React, {useContext} from 'react';
 import ReactDOM from 'react-dom';
 import Store, {Ctx} from './store/Store';
 import rootReducer from './reducer/rootReducer';
-import NextPage from "./view/NextPage";
+import WindowScrollHandler from "./view/WindowScrollHandler";
 import MockList from './view/MockList';
 // 2st option for service worker
 // import runtime from 'serviceworker-webpack-plugin/lib/runtime';
@@ -14,9 +14,9 @@ const Main = () => {
     const {store: {items}, dispatch}
         = useContext(Ctx);
     return (
-        <NextPage dispatch={dispatch}>
+        <WindowScrollHandler dispatch={dispatch}>
             <MockList items={items}/>
-        </NextPage>
+        </WindowScrollHandler>
     );
 };
 

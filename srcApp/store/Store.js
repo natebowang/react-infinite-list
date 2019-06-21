@@ -16,6 +16,6 @@ export default Store;
 class InitStore {
     constructor() {
         this.items = [];
-        this.pageNo = 0;
+        this.nextPageNo = 0;
     }
 }
