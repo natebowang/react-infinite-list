@@ -13,10 +13,16 @@ const WindowScrollHandler = ({children, dispatch, nextPageNo}) => {
         }
     };
 
+    // Must run every rerender, because handler use nextPageNo,
+    // if not update, nextPageNo will always be 0
     useEffect(() => {
         ['scroll'].forEach(event => window.addEventListener(event, windowScrollHandler));
         return () => {
             ['scroll'].forEach(event => window.removeEventListener(event, windowScrollHandler));
+        };
+    });
+    useEffect(() => {
+        return () => {
             dispatch({type: 'abortFetchItems'});
         };
     }, []);

@@ -13,12 +13,14 @@ const WindowResizeHandler = ({children, dispatch, nextPageNo}) => {
         }
     };
 
+    // Must run every rerender, because handler use nextPageNo,
+    // if not update, nextPageNo will always be 0
     useEffect(() => {
         ['resize'].forEach(event => window.addEventListener(event, windowResizeHandler));
         return () => {
             ['resize'].forEach(event => window.removeEventListener(event, windowResizeHandler));
         };
-    }, []);
+    });
     return <>{children}</>
 };
 
