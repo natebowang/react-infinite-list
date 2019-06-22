@@ -31,7 +31,7 @@ export const ifReachBottomMiddleware = (dispatch, nextPageNo) => {
             })
                 .then(apiRespToItems)
                 .then(newItems => {
-                    dispatch({type: 'ifReachBottom', newItems: newItems,});
+                    dispatch({type: 'ifReachBottom', newItems: newItems});
                 })
                 .catch(error => {
                     downloading = false;

@@ -21,10 +21,6 @@ const WindowScrollHandler = ({children, dispatch, nextPageNo}) => {
         };
     }, []);
 
-    return (
-        <>
-            {children}
-        </>
-    )
+    return <>{children}</>;
 };
 export default WindowScrollHandler;
