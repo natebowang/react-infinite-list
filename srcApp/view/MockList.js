@@ -15,7 +15,7 @@ const MockList = ({items, dispatch}) => {
     return (
         <>
             {items.map((item, key) => {
-                return <div key={key} style={style}>{item.id} {item.title}</div>
+                return <div key={key} style={style}>{key} {item.title}</div>
             })}
         </>
     );

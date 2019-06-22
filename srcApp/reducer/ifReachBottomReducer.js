@@ -1,4 +1,4 @@
-import {PAGE_SIZE, BOTTOM_DISTANCE} from "../config";
+import {PAGE_SIZE, BOTTOM_DISTANCE, ITEM_API_UTL} from "../config";
 import apiRespToItems from '../itemApiAdaptor/apiRespToItems';
 import getJsonObject from "../utility/getJsonObject";
 
@@ -12,7 +12,6 @@ const signal = controller.signal;
 // }
 let downloading = false;
 let nextPageNo = 0;
-const apiUrl = 'https://www.zouren.ml/mockapi/posts';
 
 export const ifReachBottomMiddleware = (dispatch) => {
     if (!downloading) {
@@ -26,7 +25,7 @@ export const ifReachBottomMiddleware = (dispatch) => {
         const isReachBottom =
             (window.innerHeight + window.scrollY + BOTTOM_DISTANCE) >= document.body.clientHeight;
         if (isReachBottom) {
-            getJsonObject(apiUrl)({
+            getJsonObject(ITEM_API_UTL)({
                 signal: signal,
                 nextPageNo: nextPageNo,
                 size: PAGE_SIZE,
