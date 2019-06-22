@@ -8,9 +8,9 @@ const style = {
     width: '35rem',
 };
 
-const MockList = ({items, dispatch, nextPageNo}) => {
+const MockList = ({items, dispatch}) => {
     useEffect(() => {
-        ifReachBottomMiddleware(dispatch, nextPageNo);
+        ifReachBottomMiddleware(dispatch);
     });
     return (
         <>

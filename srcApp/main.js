@@ -12,12 +12,12 @@ import MockList from './view/MockList';
 // Main component also integrated connect function.
 // I have to transfer context to props to use React.memo.
 const Main = () => {
-    const {store: {items, nextPageNo}, dispatch}
+    const {store: {items}, dispatch}
         = useContext(Ctx);
     return (
-        <WindowScrollHandler dispatch={dispatch} nextPageNo={nextPageNo}>
-            <WindowResizeHandler dispatch={dispatch} nextPageNo={nextPageNo}>
-                <MockList items={items} dispatch={dispatch} nextPageNo={nextPageNo}/>
+        <WindowScrollHandler dispatch={dispatch}>
+            <WindowResizeHandler dispatch={dispatch}>
+                <MockList items={items} dispatch={dispatch}/>
             </WindowResizeHandler>
         </WindowScrollHandler>
     );

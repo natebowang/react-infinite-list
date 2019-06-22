@@ -11,8 +11,10 @@ const signal = controller.signal;
 //     // set downloading to false in download method.
 // }
 let downloading = false;
+let nextPageNo = 0;
 const apiUrl = 'https://www.zouren.ml/mockapi/posts';
-export const ifReachBottomMiddleware = (dispatch, nextPageNo) => {
+
+export const ifReachBottomMiddleware = (dispatch) => {
     if (!downloading) {
         downloading = true;
         // console.debug('check if reach bottom '
@@ -45,10 +47,10 @@ export const ifReachBottomMiddleware = (dispatch, nextPageNo) => {
 
 export default (prev, action) => {
     downloading = false;
+    nextPageNo++;
     // console.debug('check if reach bottom '
     return {
         ...prev,
         items: prev.items.concat(action.newItems),
-        nextPageNo: prev.nextPageNo + 1,
     };
 };
