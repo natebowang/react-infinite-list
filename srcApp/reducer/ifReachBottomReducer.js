@@ -1,4 +1,4 @@
-import {PAGE_SIZE, BOTTOM_DISTANCE, ITEM_API_UTL} from "../config";
+import {PAGE_SIZE, BOTTOM_DISTANCE, ITEM_API_URL} from "../config";
 import apiRespToItems from '../itemApiAdaptor/apiRespToItems';
 import getJsonObject from "../utility/getJsonObject";
 
@@ -11,13 +11,12 @@ const signal = controller.signal;
 //     // set downloading to false in download method.
 // }
 let downloading = false;
-export const setDownloading = (b) => {
+export const setDownloading = (b) => { // for test
     downloading = b
 };
 let nextPageNo = 0;
 
 export const ifReachBottomMiddleware = (dispatch) => {
-    console.log(downloading)
     if (!downloading) {
         downloading = true;
         // console.debug('check if reach bottom '
@@ -29,7 +28,7 @@ export const ifReachBottomMiddleware = (dispatch) => {
         const isReachBottom =
             (window.innerHeight + window.scrollY + BOTTOM_DISTANCE) >= document.body.clientHeight;
         if (isReachBottom) {
-            getJsonObject(ITEM_API_UTL)({
+            getJsonObject(ITEM_API_URL)({
                 signal: signal,
                 nextPageNo: nextPageNo,
                 size: PAGE_SIZE,

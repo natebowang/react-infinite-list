@@ -5,4 +5,4 @@ export const PAGE_SIZE = 10;
 // 100px above bottom.
 export const BOTTOM_DISTANCE = 100; // px
 
-export const ITEM_API_UTL = 'https://www.zouren.ml/mockapi/posts';
+export const ITEM_API_URL = 'https://www.zouren.ml/mockapi/posts';
