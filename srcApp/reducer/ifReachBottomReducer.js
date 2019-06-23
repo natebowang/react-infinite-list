@@ -11,9 +11,13 @@ const signal = controller.signal;
 //     // set downloading to false in download method.
 // }
 let downloading = false;
+export const setDownloading = (b) => {
+    downloading = b
+};
 let nextPageNo = 0;
 
 export const ifReachBottomMiddleware = (dispatch) => {
+    console.log(downloading)
     if (!downloading) {
         downloading = true;
         // console.debug('check if reach bottom '
