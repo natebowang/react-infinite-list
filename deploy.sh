@@ -10,7 +10,7 @@ source /wbfile/knowledge/Network.cfg/vps/vps.sh
 proxychains4 rsync -azPir --delete ./dist/ ${vpsUser}@${vpsIp}:${vpsDistPath}
 
 # Appand deploy history
-cat dist/version | ssh ${vpsUser}@${vpsIp} "\
+cat dist/version | proxychains4 ssh ${vpsUser}@${vpsIp} "\
 	printf '\n  Deploy on: ' >> ${vpsDistHistoryPath} && \
 	TZ=Asia/Hong_Kong date -R >> ${vpsDistHistoryPath} && \
 	cat >> ${vpsDistHistoryPath} \
