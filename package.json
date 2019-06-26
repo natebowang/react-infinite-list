@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --env dev",
-    "build": "rm -rf dist && webpack --env prod && echo -n '  Build on: ' > dist/version && date -R >> dist/version && git branch -vv >> dist/version",
+    "build": "./npmBuild.sh",
     "test": "jest --watch"
   },
   "dependencies": {
