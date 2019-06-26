@@ -32,20 +32,28 @@ const namedModulesPlugin = new webpack.NamedModulesPlugin(
 );
 
 // gzip compress
-const CompressionPlugin = require('compression-webpack-plugin');
-const compressionPlugin = new CompressionPlugin({
-    filename: '[path].gz[query]', // default '[path].gz[query]'
-    // brotli available after Node 11.7
-    // algorithm: 'brotliCompress',
-    algorithm: 'gzip', // default 'gzip'
-    compressionOptions: {level: 9}, // default 9
-    threshold: 0, // default 0. Only compress asset bigger than this threshold
-    minRatio: 0.8, // default 0.8. Only compress asset will achieve this ratio.
-                   // 1 to compress all. 0.8 will filter images.
-    deleteOriginalAssets: false, // default false
-    // cache in node_modules/.cache/
-    cache: true,
-});
+// I disabled this plugin.
+// MySwPlugin and myPwaManifestPlugin hooks into 'done',
+// And Compression-webpack-plugin hooks into 'emit'.
+// https://github.com/webpack-contrib/compression-webpack-plugin/blob/a389f2dbdda9f084487618d8e8b9e0c210515c33/src/index.js#L148-L154
+// So compress will execute before two my own plugin.
+// Which cause 'cacheVersion not defined' error in sw.js.gz
+// Compression should be very easy to handle in shell or Nginx.
+// There is no need to figure out how to do it here.
+// const CompressionPlugin = require('compression-webpack-plugin');
+// const compressionPlugin = new CompressionPlugin({
+//     filename: '[path].gz[query]', // default '[path].gz[query]'
+//     // brotli available after Node 11.7
+//     // algorithm: 'brotliCompress',
+//     algorithm: 'gzip', // default 'gzip'
+//     compressionOptions: {level: 9}, // default 9
+//     threshold: 0, // default 0. Only compress asset bigger than this threshold
+//     minRatio: 0.8, // default 0.8. Only compress asset will achieve this ratio.
+//                    // 1 to compress all. 0.8 will filter images.
+//     deleteOriginalAssets: false, // default false
+//     // cache in node_modules/.cache/
+//     cache: true,
+// });
 
 // two options for service worker, I already put the two demonstrations in this file.:
 // 1. Set an entry for sw.js.
@@ -269,10 +277,12 @@ config.prod = {
         // default globalObject is window, which is wrong for sw
         globalObject: 'this',
     },
+    // Plugins order matters. If two plugins hooks into the same phase,
+    // first register below will execute first.
     plugins: [
-        compressionPlugin,
         mySwPlugin,
         myPwaManifestPlugin,
+        // compressionPlugin,
     ],
 };
 

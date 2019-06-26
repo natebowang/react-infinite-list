@@ -10,11 +10,15 @@ export default (request, cacheVersion) => {
             return networkFirst(request, cacheVersion).catch(error => {
                 console.error('Policy networkFirst failed. ' + error)
             });
+        case /^\/search\//.test(pathname):
+            return networkFirst(request, cacheVersion).catch(error => {
+                console.error('Policy networkFirst failed. ' + error)
+            });
         case /^\/immutable\//.test(pathname):
             return cacheFirst(request, cacheVersion).catch(error => {
                 console.error('Policy cacheFirst failed. ' + error)
             });
-        case /^\/api\//.test(pathname):
+        case /^\/entity\//.test(pathname):
             return cacheFetchRaceFinallyRenew(request, cacheVersion).catch(error => {
                 console.error('Policy cacheFetchRaceFinallyRenew failed. ' + error)
             });
@@ -38,7 +42,7 @@ export const networkOnly = (request) => {
         });
 };
 
-// example: / /pwa-manifest.json
+// example: / /pwa-manifest.json /search/*
 // cache-control: no-cache, no-store, max-age=0, must-revalidate
 export const networkFirst = (request, cacheVersion) => {
     // 1. fetch request first
@@ -88,7 +92,7 @@ export const cacheFirst = (request, cacheVersion) => {
         })
 };
 
-// example: /api/*
+// example: /api/* /entity/*
 // Cache-Control: public, max-age=3600, must-revalidate
 export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
     let fetchedResp = fetch(request)
