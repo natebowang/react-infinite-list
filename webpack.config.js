@@ -241,10 +241,12 @@ config.dev = {
     // [In most cases, cheap-module-eval-source-map is the best option]
     // (https://webpack.js.org/guides/build-performance)
     devtool: 'cheap-module-eval-source-map',
+    // must have host, otherwise can not access by ip, only can access by localhost.
     devServer: {
         contentBase: buildPath,
         hot: true,
         port: 3000,
+        host: "0.0.0.0",
     },
     // Don't use hash in development environment
     // https://webpack.js.org/guides/build-performance
