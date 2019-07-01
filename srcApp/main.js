@@ -6,6 +6,7 @@ import rootReducer from './reducer/rootReducer';
 import WindowScrollHandler from "./view/WindowScrollHandler";
 import WindowResizeHandler from './view/WindowResizeHandler';
 import MockList from './view/MockList';
+import BounceBallSpinner from "./view/BounceBallSpinner";
 // 2st option for service worker
 // import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 
@@ -18,6 +19,7 @@ const Main = () => {
         <WindowScrollHandler dispatch={dispatch}>
             <WindowResizeHandler dispatch={dispatch}>
                 <MockList items={items} dispatch={dispatch}/>
+                <BounceBallSpinner/>
             </WindowResizeHandler>
         </WindowScrollHandler>
     );
