@@ -111,6 +111,7 @@ export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
         .then(cache => cache.match(request))
         .then(cachedResp => {
             if (cachedResp !== undefined) {
+                fetchedResp.catch(e=>{});
                 return cachedResp;
             } else {
                 return fetchedResp;
