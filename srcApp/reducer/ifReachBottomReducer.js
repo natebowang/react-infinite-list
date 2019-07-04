@@ -2,7 +2,14 @@ import {PAGE_SIZE, BOTTOM_DISTANCE, ITEM_API_URL} from "../config";
 import apiRespToItems from '../itemApiAdaptor/apiRespToItems';
 import getJsonObject from "../utility/getJsonObject";
 
-export const controller = new AbortController();
+export const controller = window.AbortController === undefined ?
+    {
+        abort: () => {
+            console.error('AbortController is not defined, suggest to update this browser. ' );
+        },
+        signal: null
+    } :
+    new AbortController();
 const signal = controller.signal;
 // Since this is a async reducer, this status flag must be checked when dispatch.
 // if (downloading = false) {
