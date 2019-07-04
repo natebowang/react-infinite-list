@@ -182,11 +182,11 @@ config.common = {
                 // because I use webpack-merged to generate webpack configuration.
                 use: {loader: 'babel-loader'},
             },
-            // for normalize.css, it will be packaged in node_modules chunk
-            {
-                test: /\.css$/,
-                use: [{loader: 'style-loader'}, {loader: 'css-loader'}],
-            },
+            // for css, it will be packaged in node_modules chunk
+            // {
+            //     test: /\.css$/,
+            //     use: [{loader: 'style-loader'}, {loader: 'css-loader'}],
+            // },
             {
                 include: [
                     srcStaticPath,

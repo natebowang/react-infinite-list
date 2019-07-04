@@ -1,4 +1,3 @@
-import 'normalize.css';
 import React, {useContext} from 'react';
 import ReactDOM from 'react-dom';
 import Store, {Ctx} from './store/Store';
