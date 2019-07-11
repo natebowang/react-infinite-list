@@ -1,5 +1,5 @@
 import getJsonObject from "./getJsonObject";
-import mockItems from '../itemApiAdaptor/mockItems';
+import mockItems from './mockItems';
 
 const apiUrl = '/api/articles';
 describe('get json object', () => {

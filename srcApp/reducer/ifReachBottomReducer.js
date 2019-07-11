@@ -1,7 +1,9 @@
-import {PAGE_SIZE, BOTTOM_DISTANCE, ITEM_API_URL} from "../config";
+import {PAGE_SIZE, BOTTOM_DISTANCE} from "../config";
+import {ITEM_API_URL} from "../itemApiAdaptor/config";
 import apiRespToItems from '../itemApiAdaptor/apiRespToItems';
-import getJsonObject from "../utility/getJsonObject";
+import getJsonObject from "../itemApiAdaptor/getJsonObject";
 
+// Firefox does not support AbortController in 2019. So I have to define a fallback here.
 export const controller = window.AbortController === undefined ?
     {
         abort: () => {
@@ -11,18 +13,19 @@ export const controller = window.AbortController === undefined ?
     } :
     new AbortController();
 const signal = controller.signal;
-// Since this is a async reducer, this status flag must be checked when dispatch.
-// if (downloading = false) {
-//     downloading = true;
-//     dispatch({type: 'ifReachBottom'});
-//     // set downloading to false in download method.
-// }
-let downloading = false;
-export const setDownloading = (b) => { // for test
-    downloading = b
-};
+
 let nextPageNo = 0;
 
+// Since this is a async reducer, this status flag must be checked when dispatch.
+let downloading = false;
+export const setDownloading = (b) => { // setter for test
+    downloading = b
+};
+// You can write the below logic in a middleware.
+// if (!downloading) {
+//     downloading = true;
+//     dispatch({type: 'ifReachBottom'}); // set downloading to false in reducer.
+// }
 export const ifReachBottomMiddleware = (dispatch) => {
     if (!downloading) {
         downloading = true;
