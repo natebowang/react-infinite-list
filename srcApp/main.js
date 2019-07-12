@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useReducer} from 'react';
 import ReactDOM from 'react-dom';
-import Store, {Ctx} from './store/Store';
+import InitStore from './store/Store';
 import rootReducer from './reducer/rootReducer';
 import WindowScrollHandler from "./view/WindowScrollHandler";
 import WindowResizeHandler from './view/WindowResizeHandler';
@@ -11,8 +11,8 @@ import MockList from './view/MockList';
 // Main component also integrated connect function.
 // I have to transfer context to props to use React.memo.
 const Main = () => {
-    const {store: {items}, dispatch}
-        = useContext(Ctx);
+    const [{items}, dispatch]
+        = useReducer(rootReducer, new InitStore());
     return (
         <WindowScrollHandler dispatch={dispatch}>
             <WindowResizeHandler dispatch={dispatch}>
@@ -23,9 +23,7 @@ const Main = () => {
 };
 
 ReactDOM.render((
-    <Store reducer={rootReducer}>
-        <Main/>
-    </Store>
+    <Main/>
 ), document.getElementById('root'));
 
 // 1st option for service worker
