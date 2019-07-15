@@ -19,7 +19,8 @@ const WindowResizeHandler = ({dispatch}) => {
             ['resize'].forEach(event => window.removeEventListener(event, windowResizeHandler));
         };
     }, []);
-    return <></>
+
+    return <></>;
 };
 
 export default WindowResizeHandler;
