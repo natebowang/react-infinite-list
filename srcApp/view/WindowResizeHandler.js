@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {ifReachBottomMiddleware} from "../reducer/ifReachBottomReducer";
 
-const WindowResizeHandler = ({children, dispatch}) => {
+const WindowResizeHandler = ({dispatch}) => {
     const windowResizeHandler = (event) => {
         event.preventDefault();
         switch (event.type) {
@@ -19,7 +19,7 @@ const WindowResizeHandler = ({children, dispatch}) => {
             ['resize'].forEach(event => window.removeEventListener(event, windowResizeHandler));
         };
     }, []);
-    return <>{children}</>
+    return <></>
 };
 
 export default WindowResizeHandler;

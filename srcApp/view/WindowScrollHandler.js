@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {ifReachBottomMiddleware} from "../reducer/ifReachBottomReducer";
 
-const WindowScrollHandler = ({children, dispatch}) => {
+const WindowScrollHandler = ({dispatch}) => {
     const windowScrollHandler = (event) => {
         event.preventDefault();
         switch (event.type) {
@@ -21,6 +21,6 @@ const WindowScrollHandler = ({children, dispatch}) => {
         };
     }, []);
 
-    return <>{children}</>;
+    return <></>;
 };
 export default WindowScrollHandler;

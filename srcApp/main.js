@@ -14,11 +14,11 @@ const Main = () => {
     const [{items}, dispatch]
         = useReducer(rootReducer, new InitStore());
     return (
-        <WindowScrollHandler dispatch={dispatch}>
-            <WindowResizeHandler dispatch={dispatch}>
-                <MockList items={items} dispatch={dispatch}/>
-            </WindowResizeHandler>
-        </WindowScrollHandler>
+        <>
+            <WindowScrollHandler dispatch={dispatch}/>
+            <WindowResizeHandler dispatch={dispatch}/>
+            <MockList items={items} dispatch={dispatch}/>
+        </>
     );
 };
 
