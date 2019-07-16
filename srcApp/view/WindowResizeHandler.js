@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, memo} from 'react';
 import {ifReachBottomMiddleware} from "../reducer/ifReachBottomReducer";
 
-const WindowResizeHandler = ({dispatch}) => {
+const WindowResizeHandler = memo(({dispatch}) => {
     const windowResizeHandler = (event) => {
         event.preventDefault();
         switch (event.type) {
@@ -21,6 +21,5 @@ const WindowResizeHandler = ({dispatch}) => {
     }, []);
 
     return <></>;
-};
-
+});
 export default WindowResizeHandler;

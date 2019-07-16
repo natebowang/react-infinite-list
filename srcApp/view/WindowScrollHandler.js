@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, memo} from 'react';
 import {ifReachBottomMiddleware} from "../reducer/ifReachBottomReducer";
 
-const WindowScrollHandler = ({dispatch}) => {
+const WindowScrollHandler = memo(({dispatch}) => {
     const windowScrollHandler = (event) => {
         event.preventDefault();
         switch (event.type) {
@@ -22,5 +22,5 @@ const WindowScrollHandler = ({dispatch}) => {
     }, []);
 
     return <></>;
-};
+});
 export default WindowScrollHandler;
