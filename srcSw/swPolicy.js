@@ -111,7 +111,9 @@ export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
         .then(cache => cache.match(request))
         .then(cachedResp => {
             if (cachedResp !== undefined) {
-                fetchedResp.catch(e=>{});
+                fetchedResp.catch(error => {
+                    console.warn(`${error} for ${request.url}. Return offline page.`);
+                });
                 return cachedResp;
             } else {
                 return fetchedResp;
