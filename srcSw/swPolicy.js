@@ -3,29 +3,17 @@ export default (request, cacheVersion) => {
     let pathname = new URL(request.url).pathname;
     switch (true) {
         case ['/sw.js'].includes(pathname):
-            return networkOnly(request).catch(error => {
-                console.error('Policy networkOnly failed. ' + error)
-            });
+            return networkOnly(request);
         case ['/', '/pwa-manifest.json'].includes(pathname):
-            return networkFirst(request, cacheVersion).catch(error => {
-                console.error('Policy networkFirst failed. ' + error)
-            });
+            return networkFirst(request, cacheVersion);
         case /^\/search\//.test(pathname):
-            return networkFirst(request, cacheVersion).catch(error => {
-                console.error('Policy networkFirst failed. ' + error)
-            });
+            return networkFirst(request, cacheVersion);
         case /^\/immutable\//.test(pathname):
-            return cacheFirst(request, cacheVersion).catch(error => {
-                console.error('Policy cacheFirst failed. ' + error)
-            });
+            return cacheFirst(request, cacheVersion);
         case /^\/entity\//.test(pathname):
-            return cacheFetchRaceFinallyRenew(request, cacheVersion).catch(error => {
-                console.error('Policy cacheFetchRaceFinallyRenew failed. ' + error)
-            });
+            return cacheFetchRaceFinallyRenew(request, cacheVersion);
         default:
-            return networkFirst(request, cacheVersion).catch(error => {
-                console.error('Policy networkFirst failed. ' + error)
-            });
+            return networkFirst(request, cacheVersion);
     }
 };
 
@@ -35,9 +23,10 @@ export const networkOnly = (request) => {
     return fetch(request)
         .then(throwIfNot200)
         // If not 200 or failed to fetch, reject promise.
-        .catch(error => {
+        .catch(fetchError => {
+            console.error(`Policy networkOnly failed. Fetch failed (${fetchError} for ${request.url}).`);
             return Promise.reject(
-                new Error(`Fetch failed (${error} for ${request.url}).`)
+                new Error("Oops. Looks like there's no internet connection.")
             );
         });
 };
@@ -49,8 +38,8 @@ export const networkFirst = (request, cacheVersion) => {
     return fetch(request)
     // 2. if 200, put to cache. if not 200, throw error. try to delete cache.
         .then(putIf200ThrowAndDeleteIfNot200(cacheVersion)(request))
-        .catch(error => {
-            console.warn(`${error} for ${request.url}. Try offline page instead.`);
+        .catch(fetchError => {
+            console.warn(`${fetchError} for ${request.url}. Try offline page instead.`);
             return caches.open(cacheVersion)
             // 3. if failed to fetch, use cached assets
                 .then(cache => cache.match(request))
@@ -59,8 +48,9 @@ export const networkFirst = (request, cacheVersion) => {
                     if (cachedResp !== undefined) {
                         return cachedResp;
                     } else {
+                        console.error(`Policy networkFirst failed. Fetch failed (${fetchError} for ${request.url}). And not cached.`);
                         return Promise.reject(
-                            new Error(`Fetch failed (${error} for ${request.url}). And not cached.`)
+                            new Error("Oops. Looks like there's no internet connection.")
                         );
                     }
                 })
@@ -83,9 +73,10 @@ export const cacheFirst = (request, cacheVersion) => {
                 // 4. if 200, return response and put to cache.
                     .then(putIf200ThrowAndDeleteIfNot200(cacheVersion)(request))
                     // 5. If not 200 or failed to fetch, reject promise.
-                    .catch(error => {
+                    .catch(fetchError => {
+                        console.error(`Policy cacheFirst failed. Not cached. And fetch failed (${fetchError} for ${request.url}).`);
                         return Promise.reject(
-                            new Error(`Not cached and fetch failed (${error} for ${request.url}).`)
+                            new Error("Oops. Looks like there's no internet connection.")
                         );
                     })
             }
@@ -100,9 +91,10 @@ export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
         .then(putIf200ThrowAndDeleteIfNot200(cacheVersion)(request))
         // 3. If fetched response is not 200 or failed to fetch,
         //    reject promise. try to delete cache.
-        .catch(error => {
+        .catch(fetchError => {
+            console.warn(`Policy cacheFetchRaceFinallyRenew warn: fetch failed ${fetchError} for ${request.url}.`);
             return Promise.reject(
-                new Error(`Not cached and fetch failed (${error} for ${request.url}).`)
+                new Error("Oops. Looks like there's no internet connection.")
             );
         });
 
@@ -111,11 +103,11 @@ export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
         .then(cache => cache.match(request))
         .then(cachedResp => {
             if (cachedResp !== undefined) {
-                fetchedResp.catch(error => {
-                    console.warn(`${error} for ${request.url}. Return offline page.`);
+                fetchedResp.catch(() => {
                 });
                 return cachedResp;
             } else {
+                console.error('Policy cacheFetchRaceFinallyRenew failed. Not cached and fetch failed.');
                 return fetchedResp;
             }
         });
