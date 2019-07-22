@@ -10,7 +10,7 @@ describe('Transform original backend format to items array format', () => {
     test('wrong format', () => {
         // toThrow need a function wrapper
         expect(()=>{apiRespToItems(undefined)}).toThrow(
-            /wrong json format/i
+            /please try again later/i
         );
     });
 });
