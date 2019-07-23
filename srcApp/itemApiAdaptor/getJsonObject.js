@@ -11,7 +11,8 @@ const throwIfNot200 = response => {
     if (response.status === 200) {
         return response;
     } else {
-        throw new Error(response.status + ' ' + response.statusText);
+        console.error(response.status + ' ' + response.statusText);
+        throw new Error('Sorry something went wrong with the server. Please try again later.');
     }
 };
 
