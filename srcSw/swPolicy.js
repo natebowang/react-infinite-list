@@ -25,9 +25,6 @@ export const networkOnly = (request) => {
         // If not 200 or failed to fetch, reject promise.
         .catch(fetchError => {
             console.error(`Policy networkOnly failed. Fetch failed (${fetchError} for ${request.url}).`);
-            return Promise.reject(
-                new Error("Oops. Looks like there's no internet connection.")
-            );
         });
 };
 
@@ -49,9 +46,6 @@ export const networkFirst = (request, cacheVersion) => {
                         return cachedResp;
                     } else {
                         console.error(`Policy networkFirst failed. Fetch failed (${fetchError} for ${request.url}). And not cached.`);
-                        return Promise.reject(
-                            new Error("Oops. Looks like there's no internet connection.")
-                        );
                     }
                 })
         });
@@ -75,9 +69,6 @@ export const cacheFirst = (request, cacheVersion) => {
                     // 5. If not 200 or failed to fetch, reject promise.
                     .catch(fetchError => {
                         console.error(`Policy cacheFirst failed. Not cached. And fetch failed (${fetchError} for ${request.url}).`);
-                        return Promise.reject(
-                            new Error("Oops. Looks like there's no internet connection.")
-                        );
                     })
             }
         })
@@ -93,9 +84,6 @@ export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
         //    reject promise. try to delete cache.
         .catch(fetchError => {
             console.warn(`Policy cacheFetchRaceFinallyRenew warn: fetch failed ${fetchError} for ${request.url}.`);
-            return Promise.reject(
-                new Error("Oops. Looks like there's no internet connection.")
-            );
         });
 
     // 1. Return cached of fetched response which is faster(probably cached).
