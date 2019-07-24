@@ -22,7 +22,7 @@ describe('get json object', () => {
             json: () => mockItems,
         })));
         return (getJsonObject(apiUrl)({}).catch(e => expect(e).toEqual(
-            new Error('404 some reason')
+            new Error('Sorry something went wrong with the server. Please try again later.')
         )));
     });
 });

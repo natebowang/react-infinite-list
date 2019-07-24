@@ -1,12 +1,12 @@
 import ifReachBottomReducer from "./ifReachBottomReducer";
-import abortFetchItemsHandler from "./abortFetchItemsHandler";
+import abortFetchItemsReducer from "./abortFetchItemsReducer";
 
 export default (prev, action) => {
     switch (action.type) {
         case 'ifReachBottom':
             return ifReachBottomReducer(prev, action);
         case 'abortFetchItems':
-            return abortFetchItemsHandler(prev, action);
+            return abortFetchItemsReducer(prev, action);
         default:
             return prev;
     }

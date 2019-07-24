@@ -1,9 +1,9 @@
-import abortFetchItemsHandler from '../reducer/abortFetchItemsHandler';
+import abortFetchItemsReducer from './abortFetchItemsReducer';
 
 jest.spyOn(window.AbortController.prototype, 'abort');
 
 test('cancel AJAX calls when unmount', (done) => {
-    abortFetchItemsHandler({}, {});
+    abortFetchItemsReducer({}, {});
     setTimeout(() => {
         expect(AbortController.prototype.abort).toHaveBeenCalledTimes(1);
         done();
