@@ -21,10 +21,9 @@ export default (request, cacheVersion) => {
 // cache-control: no-cache, no-store, max-age=0, must-revalidate
 export const networkOnly = (request) => {
     return fetch(request)
-        .then(throwIfNot200)
-        // If not 200 or failed to fetch, reject promise.
+    // If failed to fetch, reject promise.
         .catch(fetchError => {
-            console.error(`Policy networkOnly failed. Fetch failed (${fetchError} for ${request.url}).`);
+            console.error(`Policy networkOnly failed. (${fetchError} for ${request.url}).`);
         });
 };
 
@@ -33,19 +32,19 @@ export const networkOnly = (request) => {
 export const networkFirst = (request, cacheVersion) => {
     // 1. fetch request first
     return fetch(request)
-    // 2. if 200, put to cache. if not 200, throw error. try to delete cache.
-        .then(putIf200ThrowAndDeleteIfNot200(cacheVersion)(request))
+    // 2. if 200, put to cache. if not 200, try to delete cache.
+        .then(putIf200DeleteIfNot200(cacheVersion)(request))
         .catch(fetchError => {
             console.warn(`${fetchError} for ${request.url}. Try offline page instead.`);
             return caches.open(cacheVersion)
             // 3. if failed to fetch, use cached assets
                 .then(cache => cache.match(request))
                 .then(cachedResp => {
-                    // 4. if no cache(undefined), reject promise.
                     if (cachedResp !== undefined) {
                         return cachedResp;
                     } else {
-                        console.error(`Policy networkFirst failed. Fetch failed (${fetchError} for ${request.url}). And not cached.`);
+                        // 4. if no cache(undefined), error log.
+                        console.error(`Policy networkFirst failed. (${fetchError} for ${request.url}). And not cached.`);
                     }
                 })
         });
@@ -59,16 +58,16 @@ export const cacheFirst = (request, cacheVersion) => {
         .then(cache => cache.match(request))
         .then(cachedResp => {
             if (cachedResp !== undefined) {
-                // 2. if found, return response.
+                // 2. if found, return cache.
                 return cachedResp;
             } else {
                 // 3. If NOT cached(undefined), fetch request.
                 return fetch(request)
-                // 4. if 200, return response and put to cache.
-                    .then(putIf200ThrowAndDeleteIfNot200(cacheVersion)(request))
-                    // 5. If not 200 or failed to fetch, reject promise.
+                // 4. If 200, return response and put to cache. If not 200 try to delete cache.
+                    .then(putIf200DeleteIfNot200(cacheVersion)(request))
+                    // 5. If failed to fetch, error log.
                     .catch(fetchError => {
-                        console.error(`Policy cacheFirst failed. Not cached. And fetch failed (${fetchError} for ${request.url}).`);
+                        console.error(`Policy cacheFirst failed. Not cached. And (${fetchError} for ${request.url}).`);
                     })
             }
         })
@@ -79,37 +78,26 @@ export const cacheFirst = (request, cacheVersion) => {
 export const cacheFetchRaceFinallyRenew = (request, cacheVersion) => {
     let fetchedResp = fetch(request)
     // 2. If fetched response is 200, update cache.
-        .then(putIf200ThrowAndDeleteIfNot200(cacheVersion)(request))
-        // 3. If fetched response is not 200 or failed to fetch,
-        //    reject promise. try to delete cache.
+        .then(putIf200DeleteIfNot200(cacheVersion)(request))
+        // 3. If fetched response is not 200, try to delete cache.
         .catch(fetchError => {
-            console.warn(`Policy cacheFetchRaceFinallyRenew warn: fetch failed ${fetchError} for ${request.url}.`);
+            console.warn(`Policy cacheFetchRaceFinallyRenew warn: ${fetchError} for ${request.url}.`);
         });
 
-    // 1. Return cached of fetched response which is faster(probably cached).
+    // 1. Return cached or fetched response which is faster(probably cached).
     return caches.open(cacheVersion)
         .then(cache => cache.match(request))
         .then(cachedResp => {
             if (cachedResp !== undefined) {
-                fetchedResp.catch(() => {
-                });
                 return cachedResp;
             } else {
-                console.error('Policy cacheFetchRaceFinallyRenew failed. Not cached and fetch failed.');
+                console.debug('Policy cacheFetchRaceFinallyRenew warn: Not cached.');
                 return fetchedResp;
             }
         });
 };
 
-const throwIfNot200 = response => {
-    if (response.status === 200) {
-        return response;
-    } else {
-        throw new Error(response.status + ' ' + response.statusText);
-    }
-};
-
-const putIf200ThrowAndDeleteIfNot200 = cacheVersion => request => response => {
+const putIf200DeleteIfNot200 = cacheVersion => request => response => {
     if (response.status === 200) {
         console.debug(`Put 200 response: ${request.url}`);
         return caches.open(cacheVersion)
@@ -119,10 +107,10 @@ const putIf200ThrowAndDeleteIfNot200 = cacheVersion => request => response => {
             });
     } else {
         console.debug(`Delete non 200 response: ${response.status} for ${request.url}`);
-        caches.open(cacheVersion)
+        return caches.open(cacheVersion)
             .then(cache => {
                 cache.delete(request);
+                return response;
             });
-        throw new Error(response.status + ' ' + response.statusText);
     }
 };
