@@ -1,7 +1,7 @@
 {
-  "name": "tt",
+  "name": "template",
   "version": "0.1.0",
-  "description": "",
+  "description": "template",
   "author": "Nate Bo Wang",
   "license": "MIT",
   "main": "srcMain/main.js",
