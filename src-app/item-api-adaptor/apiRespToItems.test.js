@@ -1,5 +1,5 @@
 import apiRespToItems from './apiRespToItems';
-import mockItems from '../itemApiAdaptor/mockItems';
+import mockItems from './/mockItems';
 
 describe('Transform original backend format to items array format', () => {
     test('correct format', () => {

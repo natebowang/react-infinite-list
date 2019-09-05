@@ -3,7 +3,7 @@ import ifReachBottomReducer, {
     ifReachBottomMiddleware
 } from "./ifReachBottomReducer";
 import {BOTTOM_DISTANCE} from "../config";
-import mockItems from '../itemApiAdaptor/mockItems';
+import mockItems from '../item-api-adaptor/mockItems';
 
 let dispatch = jest.fn(() => {
     setDownloading(false);

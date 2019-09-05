@@ -1,7 +1,7 @@
 import {PAGE_SIZE, BOTTOM_DISTANCE} from "../config";
-import {ITEM_API_URL} from "../itemApiAdaptor/config";
-import apiRespToItems from '../itemApiAdaptor/apiRespToItems';
-import getJsonObject from "../itemApiAdaptor/getJsonObject";
+import {ITEM_API_URL} from "../item-api-adaptor/config";
+import apiRespToItems from '../item-api-adaptor/apiRespToItems';
+import getJsonObject from "../item-api-adaptor/getJsonObject";
 
 // Firefox does not support AbortController in 2019. So I have to define a fallback here.
 export const controller = window.AbortController === undefined ?
