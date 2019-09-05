@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --env dev",
-    "build": "./npm-build.sh",
+    "build": "npmBuild.sh",
     "test": "jest --watch"
   },
   "dependencies": {

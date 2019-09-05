@@ -14,7 +14,7 @@
 
 // Support import your own module
 // import util from './util';
-import choosePolicy from "./sw-policy";
+import choosePolicy from "./swPolicy";
 
 // *DO NOT* support import module from node, may be because
 // the generation of webpackGeneratedAssets and cacheVersion.
