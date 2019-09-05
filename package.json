@@ -4,14 +4,14 @@
   "description": "template",
   "author": "Nate Bo Wang",
   "license": "MIT",
-  "main": "srcMain/main.js",
+  "main": "src-app/main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com"
   },
   "scripts": {
     "start": "webpack-dev-server --env dev",
-    "build": "./npmBuild.sh",
+    "build": "./npm-build.sh",
     "test": "jest --watch"
   },
   "dependencies": {

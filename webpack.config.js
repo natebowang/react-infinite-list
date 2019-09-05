@@ -1,14 +1,14 @@
 const path = require('path');
 const buildPath = path.resolve(__dirname, 'dist');
-const srcAppPath = path.resolve(__dirname, 'srcApp');
-const srcStaticPath = path.resolve(__dirname, 'srcStatic');
+const srcAppPath = path.resolve(__dirname, 'src-app');
+const srcStaticPath = path.resolve(__dirname, 'src-static');
 
 const merge = require('webpack-merge');
 
 // create html based on the bundled js name
 const HtmlPlugin = require('html-webpack-plugin');
 const htmlPlugin = new HtmlPlugin({
-    template: './srcTemplate/index.html',
+    template: './src-template/index.html',
     // inject the script in body tag
     inject: 'body',
     // true doesn't work, need a object if want to enable minify
@@ -68,9 +68,9 @@ const namedModulesPlugin = new webpack.NamedModulesPlugin(
 //    mode. And you could use serviceWorkerOption for cache.
 
 // 1st option for service worker
-const srcSwPath = path.resolve(__dirname, 'srcSw');
+const srcSwPath = path.resolve(__dirname, 'src-service-worker');
 // 2nd option for service worker
-// const swPath = path.resolve(__dirname, 'srcSw/sw.js');
+// const swPath = path.resolve(__dirname, 'src-service-worker/sw.js');
 // const ServiceWorkerPlugin = require('serviceworker-webpack-plugin');
 // const serviceWorkerPlugin = new ServiceWorkerPlugin({
 //     entry: swPath,
@@ -165,9 +165,9 @@ const myPwaManifestPlugin = {
 const config = {};
 config.common = {
     entry: {
-        'immutable/js/main': './srcApp/main.js',
+        'immutable/js/main': './src-app/main.js',
         // 1st option for service worker
-        'sw': './srcSw/sw.js',
+        'sw': './src-service-worker/sw.js',
     },
     module: {
         rules: [
